@@ -8,10 +8,20 @@ import 'package:flutter_application_1/screen/angerlist.dart';
 import 'package:flutter_application_1/screen/animal.dart';
 import 'package:flutter_application_1/screen/dashboard.dart';
 import 'package:flutter_application_1/screen/login.dart';
+import 'package:flutter_application_1/screen/shared.dart';
+
 import 'package:flutter_application_1/screen/splash_screen.dart';
 import 'package:flutter_application_1/widgets/grapichh.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Uygulama çalışmadan önce sharedPreferences kullanabilmek için bu fonksiyonu
+  SharedPreferencesHelper preferences =
+      SharedPreferencesHelper(); // nesne oluşturuyoruz
+  // burda sharedpreferences oluşturup çalıştırıyoruz.
+  await preferences
+      .initialize(); //shred pref nesnesını olusturmammaız ıcın beklememız lazım
+
   runApp(const MyApp());
 }
 

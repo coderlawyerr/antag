@@ -3,15 +3,14 @@
 four detil custom ve swipper customları cağrıldıgı yer 
 
 */
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/widgets/an%C4%B1malAnger.dart';
+//import 'package:flutter_application_1/widgets/an%C4%B1malAnger.dart';
 import 'package:flutter_application_1/widgets/animalDetail.dart';
 
 import 'package:flutter_application_1/widgets/fourDetail.dart';
 
-import 'package:flutter_application_1/widgets/grapichh.dart';
+//import 'package:flutter_application_1/widgets/grapichh.dart';
 import 'package:flutter_application_1/widgets/swiper.dart';
 
 class Animal extends StatelessWidget {

@@ -20,7 +20,7 @@ class AngarList extends StatelessWidget {
       backgroundColor: Colors.teal,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: const Color.fromRGBO(11, 84, 73, 1),
+        backgroundColor: const Color.fromARGB(230, 14, 38, 38),
         elevation: 0,
 
         ///başlık kısmı
@@ -51,45 +51,68 @@ class AngarList extends StatelessWidget {
               Container(
                 height: double.infinity,
                 width: double.infinity,
-                color: Colors.white.withOpacity(0.2),
+                // color: Colors.white.withOpacity(0.2),
               ),
               Column(
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    decoration: const BoxDecoration(),
+                    margin: const EdgeInsets.only(top: 20, bottom: 8),
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(225, 35, 35, 35),
+                    ),
+                    //baslık kısmı
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: titleItems,
+                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(child: titleItems[0]),
+                        const VerticalDivider(
+                            color: Colors.grey, thickness: 10),
+                        Expanded(child: titleItems[1]),
+                        const VerticalDivider(
+                            color: Colors.grey, thickness: 10),
+                        Expanded(child: titleItems[2]),
+                      ],
                     ),
                   ),
-                  //bir tane liste tanmladık
+                  //liste
                   Expanded(
                     child: Center(
-                      child: ListView.builder(
-                        itemCount: angerList.length,
-                        itemBuilder: (context, index) {
-                          var item = angerList[index];
-                          return Container(
-                            // eger çifte  koyu değilse açık renkli olsun
-                            color: index % 2 == 0
-                                ? Colors.teal.shade700
-                                : Colors.teal.shade400,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                TitleItem(title: item[0]),
-                                TitleItem(
-                                  title: item[1],
-                                  onTap: () {
-                                    return pageNavigator(context, Animal());
-                                  },
+                      child: SingleChildScrollView(
+                        ///table wıdget  map () fonksiyonu  liste içinde tüm elemanları  sıarayla dönüyor ve bir şeye dönüştürüyor
+                        /// e de listenin elemanlarından bır tanesi.anger listten gelıyor
+                        child: Table(
+                          children: angerList
+                              .asMap()
+                              .map(
+                                (index, e) => MapEntry(
+                                  index,
+                                  TableRow(
+                                    decoration: BoxDecoration(
+                                      color: index % 2 == 0
+                                          ? const Color.fromARGB(
+                                              230, 14, 38, 38)
+                                          : const Color.fromARGB(
+                                              230, 9, 72, 65),
+                                    ),
+                                    children: [
+                                      //e anger lıstten gelıyor.
+                                      TableCell(child: TitleItem(title: e[0])),
+                                      TableCell(
+                                        child: TitleItem(
+                                          title: e[1],
+                                          onTap: () {
+                                            pageNavigator(context, Animal());
+                                          },
+                                        ),
+                                      ),
+                                      TableCell(child: TitleItem(title: e[2])),
+                                    ],
+                                  ),
                                 ),
-                                TitleItem(title: item[2]),
-                              ],
-                            ),
-                          );
-                        },
+                              )
+                              .values
+                              .toList(),
+                        ),
                       ),
                     ),
                   )
@@ -111,7 +134,7 @@ class TitleItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         child: InkWell(
           onTap: onTap,
           child: Text(

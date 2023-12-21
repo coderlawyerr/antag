@@ -1,24 +1,54 @@
-/*
-bu sayfa giriş ekranı 2 tane text field  ekranı
- bir tane giriş yapmak için  containerden bir buton oluşturduk 
- ona tıklanama özelliği verilsin diye gestura detector kullandıık
+// /*
+// bu sayfa giriş ekranı 2 tane text field  ekranı
+//  bir tane giriş yapmak için  containerden bir buton oluşturduk
+//  ona tıklanama özelliği verilsin diye gestura detector kullandıık
 
-*/
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Util/MiniNavigator.dart';
 import 'package:flutter_application_1/screen/dashboard.dart';
+import 'package:flutter_application_1/screen/shared.dart';
 import 'package:flutter_application_1/widgets/textfield.dart';
 
 class Login extends StatelessWidget {
-  Login({super.key});
+  Login({
+    Key? key,
+  }) : super(key: key);
 
   final TextEditingController controller = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  //eğer admin değilse popup Mesajı çıkıcak.
+  void showDialogFunction(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text("Şifreniz yanlış, sakinleşin ve tekrar deneyin!"),
+        actions: <Widget>[
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text("Tamam"),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    //class dan objeyi oluşturuyoruz.
+    SharedPreferencesHelper preferences = SharedPreferencesHelper();
+    //Giriş yap butonu admin se diğer sayfaya geçicek. Yoksa showdialog göstericek.
     void loginPush() {
-      pageNavigator(context, Dashboard());
+      //fonksiopn olusturduk doğruysa
+      bool isAdmin =
+          preferences.isAdmin(controller.text, passwordController.text);
+      if (isAdmin) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Dashboard()));
+      } else {
+        showDialogFunction(context);
+      }
     }
 
     return Scaffold(
@@ -56,7 +86,7 @@ class Login extends StatelessWidget {
                     ),
                   ),
                 ),
-                // const SizedBox(height: 150),
+// const SizedBox(height: 150),
 
                 ///kullanıcı Adı
                 CustomTextField(
@@ -91,7 +121,7 @@ class Login extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                //şifremi unuttum kısmı
+//şifremi unuttum kısmı
                 const Text(
                   "şifremi unuttum",
                   style: TextStyle(color: Colors.grey, fontSize: 15),

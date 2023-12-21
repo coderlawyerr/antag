@@ -1,3 +1,7 @@
+/*
+burada splash ekranı yapımına yatık acılısta flutter logosu gıtmesını sagladık
+
+*/
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screen/login.dart';
 
@@ -12,10 +16,12 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 500), () {
-      Navigator.push(
+    Future.delayed(const Duration(milliseconds: 3000), () {
+      Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Login()),
+        MaterialPageRoute(
+          builder: (context) => Login(),
+        ),
       );
     });
   }
@@ -26,7 +32,7 @@ class _SplashState extends State<Splash> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/bbgg.png"),
+            image: AssetImage("assets/background.png"),
             fit: BoxFit.cover,
           ),
         ),
