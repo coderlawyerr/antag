@@ -3,7 +3,9 @@ burada splash ekranı yapımına yatık acılısta flutter logosu gıtmesını s
 
 */
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screen/dashboard.dart';
 import 'package:flutter_application_1/screen/login.dart';
+import 'package:flutter_application_1/screen/shared.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -13,16 +15,28 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
+/////////burada admın gırıs yapmıs mı dıye kontrol edıyoruz
   @override
   void initState() {
     super.initState();
     Future.delayed(const Duration(milliseconds: 3000), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Login(),
-        ),
-      );
+      //////lontrol
+      bool isAdmin = SharedPreferencesHelper().isAdmin("aa", "1907");
+      if (isAdmin) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Dashboard(),
+          ),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Login(),
+          ),
+        );
+      }
     });
   }
 

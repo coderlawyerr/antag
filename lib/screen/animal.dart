@@ -5,6 +5,8 @@ four detil custom ve swipper customları cağrıldıgı yer
 */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screen/login.dart';
+import 'package:flutter_application_1/screen/shared.dart';
 //import 'package:flutter_application_1/widgets/an%C4%B1malAnger.dart';
 import 'package:flutter_application_1/widgets/animalDetail.dart';
 
@@ -59,6 +61,19 @@ class Animal extends StatelessWidget {
 ////////////////swiper kısmı burada çağırdık
               const SizedBox(height: 8),
               const Swiperr(),
+              const SizedBox(height: 3),
+              TextButton(
+                onPressed: () {
+                  SharedPreferencesHelper().deletelogin();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Login(),
+                    ),
+                  );
+                },
+                child: Text("çıkış"),
+              ),
             ]),
           ),
         ],

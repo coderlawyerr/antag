@@ -1,37 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// Veri depolama ve kontrol işlemleri için SharedPreferences
+// kullanımını sağlayan yardımcı sınıf
 class SharedPreferencesHelper {
-  String adminPassword = "1907";
+  static SharedPreferencesHelper? _instance;
+  SharedPreferencesHelper._();
+  factory SharedPreferencesHelper() =>
+      _instance ??= SharedPreferencesHelper._();
+  SharedPreferences? _pref;
 
-////admın sıfre kontrol edılmesı
+  // Verilen kullanıcı adı ve şifre ile yönetici
+  // (admin) olup olmadığını kontrol eder
   bool isAdmin(String adminUserName, String adminPassword) {
-    if (adminPassword == '1907' && adminUserName == 'aa') {
+    //
+    String? savedUserName = _pref?.getString('username');
+    String? savedPassword = _pref?.getString('password');
+
+    if (savedUserName == adminUserName && savedPassword == adminPassword) {
+      print(savedUserName);
       return true;
     } else {
       return false;
     }
   }
 
-  //SharedPreferences nesnesi oluşturuluyor.
-  SharedPreferences? _pref;
+  // Giriş bilgilerini SharedPreferences'e kaydeder
+  void savelogin(String adminUserName, String adminPassword) async {
+    await _pref?.setString('username', adminUserName);
+    await _pref?.setString('password', adminPassword);
+  }
+
+  // Kaydedilmiş giriş bilgilerini siler
+  void deletelogin() async {
+    await _pref?.remove('username');
+    await _pref?.remove('password');
+  }
+
+////pref olustur degılse
   Future<SharedPreferences?> initialize() async {
     if (_pref != null) {
       return _pref;
     } else {
       _pref = await SharedPreferences.getInstance();
     }
-    return null;
   }
-//shared prefs üzerine mail adresini kayıt edıyoruz
-
-  // bu fonksiyon içine alınan mail'i 'mail' anahtarına kaydediyor.
-  //  Future<bool> saveMail(String mail) async {
-  //   return await _pref.setString('mail', mail);
-  // }
-
-  // bu fonksiyon içine alınan şifreyi 'password' anahtarına kaydediyor.
-  //  Future<bool> savePassword(String password) async {
-  //   return await _pref.setString('password', password);
-  // }
 }

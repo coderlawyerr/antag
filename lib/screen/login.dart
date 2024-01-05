@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screen/dashboard.dart';
 import 'package:flutter_application_1/screen/shared.dart';
 import 'package:flutter_application_1/widgets/textfield.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatelessWidget {
   Login({
@@ -14,8 +15,9 @@ class Login extends StatelessWidget {
   }) : super(key: key);
 
   final TextEditingController controller = TextEditingController();
+  String adminUserName = "";
   final TextEditingController passwordController = TextEditingController();
-
+  String adminPassword = "";
   //eğer admin değilse popup Mesajı çıkıcak.
   void showDialogFunction(BuildContext context) {
     showDialog(
@@ -27,7 +29,7 @@ class Login extends StatelessWidget {
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text("Tamam"),
+            child: const Text("Tamam"),
           ),
         ],
       ),
@@ -36,21 +38,6 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //class dan objeyi oluşturuyoruz.
-    SharedPreferencesHelper preferences = SharedPreferencesHelper();
-    //Giriş yap butonu admin se diğer sayfaya geçicek. Yoksa showdialog göstericek.
-    void loginPush() {
-      //fonksiopn olusturduk doğruysa
-      bool isAdmin =
-          preferences.isAdmin(controller.text, passwordController.text);
-      if (isAdmin) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Dashboard()));
-      } else {
-        showDialogFunction(context);
-      }
-    }
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
@@ -100,11 +87,12 @@ class Login extends StatelessWidget {
                   controller: passwordController,
                   hintText: "Şifre",
                 ),
+
                 SizedBox(height: MediaQuery.of(context).size.height * 0.1),
 
                 ///giriş yap butonu
-                GestureDetector(
-                  onTap: loginPush,
+                InkWell(
+                  onTap: () => loginPush(context),
                   child: Container(
                     width: 200,
                     height: 50,
@@ -133,5 +121,22 @@ class Login extends StatelessWidget {
         ],
       ),
     );
+  }
+
+/////kaydetme ıslemı
+  Future<void> loginPush(BuildContext context) async {
+    String adminUserName = controller.text;
+    String adminPassword = passwordController.text;
+
+    if (adminPassword == '1907' && adminUserName == 'aa') {
+      SharedPreferencesHelper().savelogin(adminUserName, adminPassword);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Dashboard()),
+      );
+    } else {
+      showDialogFunction(context);
+    }
   }
 }
